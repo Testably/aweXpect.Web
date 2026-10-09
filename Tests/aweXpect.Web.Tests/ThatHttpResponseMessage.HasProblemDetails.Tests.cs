@@ -55,6 +55,27 @@ public sealed partial class ThatHttpResponseMessage
 			}
 
 			[Fact]
+			public async Task WhenContentHasMembersThatAreNotExpected_ShouldSucceed()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("""
+					             {
+					               "type": "foo",
+					               "title": "bar",
+					               "status": 404,
+					               "detail": "baz",
+					               "instance": "could-be-some-guid"
+					             }
+					             """);
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent("foo");
+
+				await That(Act).DoesNotThrow()
+					.Because("only the expected members of the problem details are compared");
+			}
+
+			[Fact]
 			public async Task WhenNoTypeIsSpecified_ShouldFail()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -209,11 +230,11 @@ public sealed partial class ThatHttpResponseMessage
 					             HTTP-Response:
 					               200 OK HTTP/1.1
 					                 Content-Type: text/plain; charset=utf-8
-					                 Content-Length: 21
+					                 Content-Length: *
 					               {
 					                 "type": "foo"
 					               }
-					             """);
+					             """).AsWildcard();
 			}
 		}
 	}
