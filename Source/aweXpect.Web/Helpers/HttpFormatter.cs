@@ -59,11 +59,15 @@ internal static class HttpFormatter
 			.Append(" HTTP/").Append(response.Version)
 			.AppendLine();
 
-		IContentProcessor[] contentProcessors = Customize.aweXpect.Web().ContentProcessors.Get();
-
 		AppendHeaders(messageBuilder, response.Headers, indentation + indentation);
-		AppendContentHeaders(messageBuilder, response.Content, indentation + indentation);
-		await AppendContent(contentProcessors, messageBuilder, response.Content, indentation, cancellationToken);
+		if (response.Content != null)
+		{
+			IContentProcessor[] contentProcessors = Customize.aweXpect.Web().ContentProcessors.Get();
+
+			AppendContentHeaders(messageBuilder, response.Content, indentation + indentation);
+			await AppendContent(contentProcessors, messageBuilder, response.Content, indentation, cancellationToken);
+		}
+
 		return messageBuilder.ToString().TrimEnd();
 	}
 
