@@ -32,11 +32,7 @@ internal static class HttpFormatter
 		AppendHeaders(messageBuilder, request.Headers, indentation + indentation);
 		if (request.Content != null)
 		{
-			IContentProcessor[] contentProcessors = Customize.aweXpect.Web().ContentProcessors.Get();
-
-			AppendContentHeaders(messageBuilder, request.Content, indentation + indentation);
-			await AppendContent(contentProcessors, messageBuilder, request.Content, indentation,
-				cancellationToken);
+			await AppendContentWithHeaders(messageBuilder, request.Content, indentation, cancellationToken);
 		}
 
 		return messageBuilder.ToString().TrimEnd();
@@ -62,10 +58,7 @@ internal static class HttpFormatter
 		AppendHeaders(messageBuilder, response.Headers, indentation + indentation);
 		if (response.Content != null)
 		{
-			IContentProcessor[] contentProcessors = Customize.aweXpect.Web().ContentProcessors.Get();
-
-			AppendContentHeaders(messageBuilder, response.Content, indentation + indentation);
-			await AppendContent(contentProcessors, messageBuilder, response.Content, indentation, cancellationToken);
+			await AppendContentWithHeaders(messageBuilder, response.Content, indentation, cancellationToken);
 		}
 
 		return messageBuilder.ToString().TrimEnd();
@@ -93,16 +86,23 @@ internal static class HttpFormatter
 	}
 
 	/// <remarks>
-	///     Reading the content length adds the computed <c>Content-Length</c> header, so it is read before the headers are
-	///     listed, so that formatting the same content again results in the same text.
+	///     Reading the content length adds the computed <c>Content-Length</c> header, and processing the content can buffer
+	///     it, which makes a previously unknown length available. Both are therefore done before the headers are listed,
+	///     so that formatting the same content again results in the same text.
 	/// </remarks>
-	private static void AppendContentHeaders(
+	private static async Task AppendContentWithHeaders(
 		StringBuilder messageBuilder,
 		HttpContent content,
-		string indentation)
+		string indentation,
+		CancellationToken cancellationToken)
 	{
+		IContentProcessor[] contentProcessors = Customize.aweXpect.Web().ContentProcessors.Get();
+
+		StringBuilder contentBuilder = new();
+		await AppendContent(contentProcessors, contentBuilder, content, indentation, cancellationToken);
 		content.TryGetContentLength(out _);
-		AppendHeaders(messageBuilder, content.Headers, indentation);
+		AppendHeaders(messageBuilder, content.Headers, indentation + indentation);
+		messageBuilder.Append(contentBuilder);
 	}
 
 	private static void AppendHeaders(
