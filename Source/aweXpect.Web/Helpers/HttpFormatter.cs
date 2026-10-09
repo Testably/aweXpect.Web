@@ -34,7 +34,7 @@ internal static class HttpFormatter
 		{
 			IContentProcessor[] contentProcessors = Customize.aweXpect.Web().ContentProcessors.Get();
 
-			AppendHeaders(messageBuilder, request.Content.Headers, indentation + indentation);
+			AppendContentHeaders(messageBuilder, request.Content, indentation + indentation);
 			await AppendContent(contentProcessors, messageBuilder, request.Content, indentation,
 				cancellationToken);
 		}
@@ -62,7 +62,7 @@ internal static class HttpFormatter
 		IContentProcessor[] contentProcessors = Customize.aweXpect.Web().ContentProcessors.Get();
 
 		AppendHeaders(messageBuilder, response.Headers, indentation + indentation);
-		AppendHeaders(messageBuilder, response.Content.Headers, indentation + indentation);
+		AppendContentHeaders(messageBuilder, response.Content, indentation + indentation);
 		await AppendContent(contentProcessors, messageBuilder, response.Content, indentation, cancellationToken);
 		return messageBuilder.ToString().TrimEnd();
 	}
@@ -86,6 +86,19 @@ internal static class HttpFormatter
 			.AppendLine(contentType == null
 				? $"*Content with length {contentLength}*"
 				: $"*Content ({contentType}) with length {contentLength}*");
+	}
+
+	/// <remarks>
+	///     Reading the content length adds the computed <c>Content-Length</c> header, so it is read before the headers are
+	///     listed, so that formatting the same content again results in the same text.
+	/// </remarks>
+	private static void AppendContentHeaders(
+		StringBuilder messageBuilder,
+		HttpContent content,
+		string indentation)
+	{
+		content.TryGetContentLength(out _);
+		AppendHeaders(messageBuilder, content.Headers, indentation);
 	}
 
 	private static void AppendHeaders(

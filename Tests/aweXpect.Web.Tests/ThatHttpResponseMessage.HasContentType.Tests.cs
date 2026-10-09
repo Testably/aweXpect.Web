@@ -33,6 +33,7 @@ public sealed partial class ThatHttpResponseMessage
 					             HTTP-Response:
 					               200 OK HTTP/1.1
 					                 Content-Type: text/other-content-type
+					                 Content-Length: 12
 					               some content
 					             """);
 			}
@@ -68,6 +69,7 @@ public sealed partial class ThatHttpResponseMessage
 
 					             HTTP-Response:
 					               200 OK HTTP/1.1
+					                 Content-Length: 2
 					               *Content with length 2*
 					             """);
 			}
