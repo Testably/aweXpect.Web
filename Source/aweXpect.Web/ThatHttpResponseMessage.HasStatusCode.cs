@@ -23,6 +23,7 @@ public static partial class ThatHttpResponseMessage
 		this IThat<HttpResponseMessage?> source,
 		HttpStatusCode? expected)
 		=> new(source.Get().ExpectationBuilder
+			.AddSubjectContexts(ThatExtensions.ResponseContexts)
 			.AddConstraint((it, grammars) =>
 				new StatusCodeResult.PropertyConstraint(
 					it, grammars,

@@ -122,6 +122,12 @@ public sealed partial class ThatHttpResponseMessage
 					             Expected that subject
 					             does not have a `Content-Type` header equal to "some/content-type",
 					             but it had
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 Content-Type: some/content-type
+					                 Content-Length: 0
+					               *Content (some/content-type) with length 0*
 					             """);
 			}
 

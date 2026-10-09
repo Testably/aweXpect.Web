@@ -261,6 +261,30 @@ public sealed partial class ThatHttpResponseMessage
 		}
 
 		[Fact]
+		public async Task WhenOnlyOtherExpectationOnResponseFails_ShouldShowResponse()
+		{
+			HttpResponseMessage subject = ResponseBuilder
+				.WithHeader("x-a", "1");
+
+			async Task Act()
+				=> await That(subject).HasStatusCode().Success()
+					.And.Satisfies(response => response?.Headers.Contains("x-b") == true);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has a success status code (2xx) and satisfies response => response?.Headers.Contains("x-b") == true,
+				             but it was *
+
+				             HTTP-Response:
+				               200 OK HTTP/1.1
+				                 x-a: 1
+				                 Content-Type: text/plain; charset=utf-8
+				                 Content-Length: 0
+				             """).AsWildcard();
+		}
+
+		[Fact]
 		public async Task WhenTwoStatusCodeExpectationsFail_ShouldShowResponseOnce()
 		{
 			HttpResponseMessage subject = ResponseBuilder

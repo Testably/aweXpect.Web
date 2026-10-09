@@ -22,6 +22,7 @@ public class StatusCodeResult(
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> EqualTo(
 		HttpStatusCode? expected)
 		=> new(source.Get().ExpectationBuilder
+				.AddSubjectContexts(ThatExtensions.ResponseContexts)
 				.AddConstraint((it, grammars) =>
 					new PropertyConstraint(
 						it, grammars,
@@ -37,6 +38,7 @@ public class StatusCodeResult(
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> DifferentTo(
 		HttpStatusCode? unexpected)
 		=> new(source.Get().ExpectationBuilder
+				.AddSubjectContexts(ThatExtensions.ResponseContexts)
 				.AddConstraint((it, grammars) =>
 					new PropertyConstraint(
 						it, grammars,
@@ -51,6 +53,7 @@ public class StatusCodeResult(
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> Success()
 		=> new(source.Get().ExpectationBuilder
+				.AddSubjectContexts(ThatExtensions.ResponseContexts)
 				.AddConstraint((it, grammars) =>
 					new PropertyConstraint(
 						it, grammars,
@@ -65,6 +68,7 @@ public class StatusCodeResult(
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> Redirection()
 		=> new(source.Get().ExpectationBuilder
+				.AddSubjectContexts(ThatExtensions.ResponseContexts)
 				.AddConstraint((it, grammars) =>
 					new PropertyConstraint(
 						it, grammars,
@@ -79,6 +83,7 @@ public class StatusCodeResult(
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> ClientError()
 		=> new(source.Get().ExpectationBuilder
+				.AddSubjectContexts(ThatExtensions.ResponseContexts)
 				.AddConstraint((it, grammars) =>
 					new PropertyConstraint(
 						it, grammars,
@@ -93,6 +98,7 @@ public class StatusCodeResult(
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> ServerError()
 		=> new(source.Get().ExpectationBuilder
+				.AddSubjectContexts(ThatExtensions.ResponseContexts)
 				.AddConstraint((it, grammars) =>
 					new PropertyConstraint(
 						it, grammars,
@@ -107,6 +113,7 @@ public class StatusCodeResult(
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> Error()
 		=> new(source.Get().ExpectationBuilder
+				.AddSubjectContexts(ThatExtensions.ResponseContexts)
 				.AddConstraint((it, grammars) =>
 					new PropertyConstraint(
 						it, grammars,
@@ -146,14 +153,6 @@ public class StatusCodeResult(
 
 			Outcome = Outcome.Failure;
 			return this;
-		}
-
-		public override void AppendContexts(ResultContextCollector contexts)
-		{
-			if (Actual is not null && !Grammars.IsNegated())
-			{
-				contexts.AddContext(Actual);
-			}
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

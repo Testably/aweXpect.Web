@@ -205,6 +205,14 @@ public sealed partial class ThatHttpResponseMessage
 					             Expected that subject
 					             does not have a ProblemDetails content with type "foo",
 					             but it had
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 21
+					               {
+					                 "type": "foo"
+					               }
 					             """);
 			}
 		}
