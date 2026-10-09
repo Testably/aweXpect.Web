@@ -91,8 +91,7 @@ public static partial class ThatHttpResponseMessage
 			}
 			else if (expectedType != null && !await typeOptions.AreConsideredEqual(type, expectedType))
 			{
-				_failures.Add(
-					$"{It} was type {Formatter.Format(type)} which {new StringDifference(type, expectedType)}");
+				_failures.Add(typeOptions.GetExtendedMemberFailure(It, "type", Grammars, type, expectedType));
 			}
 
 			if (options.Status != null && status != options.Status)
@@ -102,20 +101,17 @@ public static partial class ThatHttpResponseMessage
 
 			if (!await options.IsTitleConsideredEqualTo(title))
 			{
-				_failures.Add(
-					$"{It} had title {Formatter.Format(title)} which {new StringDifference(title, options.Title)}");
+				_failures.Add(options.GetTitleFailure(It, Grammars, title));
 			}
 
 			if (!await options.IsDetailConsideredEqualTo(detail))
 			{
-				_failures.Add(
-					$"{It} had detail {Formatter.Format(detail)} which {new StringDifference(detail, options.Detail)}");
+				_failures.Add(options.GetDetailFailure(It, Grammars, detail));
 			}
 
 			if (!await options.IsInstanceConsideredEqualTo(instance))
 			{
-				_failures.Add(
-					$"{It} had instance {Formatter.Format(instance)} which {new StringDifference(instance, options.Instance)}");
+				_failures.Add(options.GetInstanceFailure(It, Grammars, instance));
 			}
 
 			if (_failures.Any())
