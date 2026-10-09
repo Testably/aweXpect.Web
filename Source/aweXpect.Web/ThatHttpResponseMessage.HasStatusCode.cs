@@ -30,5 +30,6 @@ public static partial class ThatHttpResponseMessage
 					expected,
 					m => m.StatusCode,
 					(a, e) => a.Equals(e),
-					$"has status code {Formatter.Format(expected)}")), source);
+					$"has status code {Formatter.Format(expected)}",
+					$"does not have status code {Formatter.Format(expected)}")), source);
 }
