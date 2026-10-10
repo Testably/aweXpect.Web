@@ -2,6 +2,7 @@
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Helpers;
 using aweXpect.Results;
 
@@ -19,8 +20,8 @@ public static partial class ThatHttpRequestMessage
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 		return new(
 			source.Get().ExpectationBuilder
-				.AddSubjectContexts(ThatExtensions.RequestContexts)
-				.AddConstraint((it, grammars) =>
+				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
+				.AddConstraint(expected, static (expected, it, grammars) =>
 					new HasMethodConstraint(it, grammars, expected)),
 			source);
 	}
