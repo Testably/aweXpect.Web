@@ -47,7 +47,7 @@ public static partial class ThatHttpRequestMessage
 			return this;
 		}
 
-		private string Article => "AEIOU".IndexOf(char.ToUpperInvariant(expected.Method[0])) >= 0 ? "an" : "a";
+		private string Article => char.ToUpperInvariant(expected.Method[0]) is 'A' or 'E' or 'I' or 'O' or 'U' ? "an" : "a";
 
 		public override string ToString()
 			=> $"has {Article} {expected} method";
