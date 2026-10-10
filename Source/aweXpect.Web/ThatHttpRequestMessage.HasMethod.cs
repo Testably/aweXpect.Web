@@ -66,7 +66,7 @@ public static partial class ThatHttpRequestMessage
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(" had method ");
 			Formatter.Format(stringBuilder, Actual?.Method);
 		}
 
