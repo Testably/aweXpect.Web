@@ -9,15 +9,15 @@ namespace aweXpect;
 public static partial class ThatUri
 {
 	/// <summary>
-	///     Verifies that the fragment of the <see cref="Uri" /> subject, without the leading <c>#</c>…
+	///     Verifies that the URL-decoded fragment of the <see cref="Uri" /> subject, without the leading <c>#</c>…
 	/// </summary>
 	/// <remarks>
 	///     <seealso cref="Uri.Fragment" />
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static PropertyResult.String<Uri?, Uri, IThat<Uri?>> HasFragment(this IThat<Uri?> source)
-		=> new(source.FailIfRelative(), u => u is null ? null : TrimFragmentDelimiter(u.Fragment), "fragment");
+		=> new(source.FailIfRelative(), u => u is null ? null : DecodeFragment(u.Fragment), "fragment");
 
-	private static string TrimFragmentDelimiter(string fragment)
-		=> fragment.Length > 0 ? fragment.Substring(1) : fragment;
+	private static string DecodeFragment(string fragment)
+		=> Uri.UnescapeDataString(fragment.Length > 0 ? fragment.Substring(1) : fragment);
 }

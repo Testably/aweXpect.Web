@@ -425,7 +425,7 @@ await Expect.That(new Uri("https://music.example.com/my%20song")).HasPath().Equa
 
 ### Fragment
 
-You can verify the fragment of the `Uri`, without the leading `#`:
+You can verify the URL-decoded fragment of the `Uri`, without the leading `#`:
 
 ```csharp
 Uri uri = new("https://music.example.com/tracks/1#lyrics");

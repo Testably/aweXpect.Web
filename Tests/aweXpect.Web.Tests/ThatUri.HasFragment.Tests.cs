@@ -104,14 +104,26 @@ public sealed partial class ThatUri
 			}
 
 			[Fact]
-			public async Task EqualTo_WhenSubjectHasEscapedCharacters_ShouldCompareTheEscapedFragment()
+			public async Task EqualTo_WhenSubjectHasEscapedCharacters_ShouldCompareTheDecodedFragment()
 			{
 				Uri subject = new("https://www.awexpect.com/tracks/1#caf%C3%A9");
 
 				async Task Act()
-					=> await That(subject).HasFragment().EqualTo("caf%C3%A9");
+					=> await That(subject).HasFragment().EqualTo("café");
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task EqualTo_WhenSubjectHasPlus_ShouldKeepThePlus()
+			{
+				Uri subject = new("https://www.awexpect.com/tracks/1#rock+roll");
+
+				async Task Act()
+					=> await That(subject).HasFragment().EqualTo("rock+roll");
+
+				await That(Act).DoesNotThrow()
+					.Because("'+' only means a space in form-encoded query strings, not in fragments");
 			}
 
 			[Fact]
