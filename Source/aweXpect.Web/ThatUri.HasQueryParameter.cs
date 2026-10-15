@@ -21,7 +21,7 @@ public static partial class ThatUri
 	[GuaranteesNotNull]
 	public static HasQueryParameterValueResult HasQueryParameter(this IThat<Uri?> source, string name)
 	{
-		ThrowHelper.ThrowIfNull(name, nameof(name));
+		ThrowHelper.ThrowIfNullOrWhiteSpace(name, nameof(name));
 		return new(source.FailIfRelative().Get().ExpectationBuilder
 				.AddConstraint(name, static (name, it, grammars) =>
 					new HasQueryParameterConstraint(it, grammars, name)),
@@ -38,7 +38,7 @@ public static partial class ThatUri
 	[GuaranteesNotNull]
 	public static AndOrResult<Uri, IThat<Uri?>> DoesNotHaveQueryParameter(this IThat<Uri?> source, string name)
 	{
-		ThrowHelper.ThrowIfNull(name, nameof(name));
+		ThrowHelper.ThrowIfNullOrWhiteSpace(name, nameof(name));
 		return new(source.FailIfRelative().Get().ExpectationBuilder
 				.AddConstraint(name, static (name, it, grammars) =>
 					new HasQueryParameterConstraint(it, grammars, name).Invert()),

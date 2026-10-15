@@ -34,6 +34,23 @@ public sealed partial class ThatUri
 					.WithMessage("The 'name' cannot be null.").AsPrefix();
 			}
 
+			[Theory]
+			[InlineData("")]
+			[InlineData(" ")]
+			[InlineData("\t")]
+			public async Task WhenNameIsEmptyOrWhitespace_ShouldThrowArgumentException(string name)
+			{
+				Uri? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasQueryParameter(name);
+
+				await That(Act).ThrowsExactly<ArgumentException>()
+					.WithParamName("name").And
+					.WithMessage("The 'name' cannot be empty or whitespace.").AsPrefix()
+					.Because("query parameters without a name are ignored, so they could never be found");
+			}
+
 			[Fact]
 			public async Task WhenQueryParameterDiffersInCase_ShouldFail()
 			{
