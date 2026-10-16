@@ -89,11 +89,12 @@ Expectations for [`Uri`](Docs/pages/02-uri.md):
 
 Expectations for [`IPAddress`](Docs/pages/03-ip-address.md):
 
-| Expectation                                      | Negated         | Summary            |
-|--------------------------------------------------|-----------------|--------------------|
-| [`IsIPv4`](Docs/pages/03-ip-address.md#kind)     | `IsNotIPv4`     | an IPv4 address    |
-| [`IsIPv6`](Docs/pages/03-ip-address.md#kind)     | `IsNotIPv6`     | an IPv6 address    |
-| [`IsLoopback`](Docs/pages/03-ip-address.md#kind) | `IsNotLoopback` | a loopback address |
+| Expectation                                        | Negated         | Summary                |
+|----------------------------------------------------|-----------------|------------------------|
+| [`IsIPv4`](Docs/pages/03-ip-address.md#kind)       | `IsNotIPv4`     | an IPv4 address        |
+| [`IsIPv6`](Docs/pages/03-ip-address.md#kind)       | `IsNotIPv6`     | an IPv6 address        |
+| [`IsLoopback`](Docs/pages/03-ip-address.md#kind)   | `IsNotLoopback` | a loopback address     |
+| [`IsInSubnet`](Docs/pages/03-ip-address.md#subnet) | `IsNotInSubnet` | in the expected subnet |
 
 ## Documentation
 
@@ -104,5 +105,5 @@ The full documentation is available at
   `HttpRequestMessage`, and status code, headers, content type, content, problem details and the request message of
   an `HttpResponseMessage`
 - [URIs](Docs/pages/02-uri.md): kind, port, scheme, host, path, fragment, base URI and query parameters of a `Uri`
-- [IP addresses](Docs/pages/03-ip-address.md): IPv4, IPv6 and loopback `IPAddress` values
+- [IP addresses](Docs/pages/03-ip-address.md): IPv4, IPv6, loopback and subnet membership of an `IPAddress`
 - [Customization](Docs/pages/04-customization.md): formatting the request and response content in failure messages
