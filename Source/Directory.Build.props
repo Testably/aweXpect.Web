@@ -5,7 +5,7 @@
 
 	<PropertyGroup>
 		<Authors>aweXpect</Authors>
-		<Description>Web extensions for aweXpect.</Description>
+		<Description>Web and network extensions for aweXpect.</Description>
 		<Copyright>Copyright (c) 2025 - $([System.DateTime]::Now.ToString('yyyy')) Valentin Breuß</Copyright>
 		<RepositoryUrl>https://github.com/Testably/aweXpect.Web.git</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
