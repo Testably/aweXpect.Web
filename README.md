@@ -52,8 +52,8 @@ HTTP-Response:
 
 Expectations for [`HttpRequestMessage`](Docs/pages/01-http-messages.md#httprequestmessage):
 
-| Expectation                                                           | Negated             | Summary                               |
-|-----------------------------------------------------------------------|---------------------|---------------------------------------|
+| Expectation                                                    | Negated             | Summary                               |
+|----------------------------------------------------------------|---------------------|---------------------------------------|
 | [`HasMethod`](Docs/pages/01-http-messages.md#method)           |                     | has the expected HTTP method          |
 | [`HasRequestUri`](Docs/pages/01-http-messages.md#request-uri)  |                     | has the expected request URI          |
 | [`HasHeader`](Docs/pages/01-http-messages.md#request-headers)  | `DoesNotHaveHeader` | has a header, optionally with a value |
@@ -61,8 +61,8 @@ Expectations for [`HttpRequestMessage`](Docs/pages/01-http-messages.md#httpreque
 
 Expectations for [`HttpResponseMessage`](Docs/pages/01-http-messages.md#httpresponsemessage):
 
-| Expectation                                                                          | Negated                       | Summary                                         |
-|--------------------------------------------------------------------------------------|-------------------------------|-------------------------------------------------|
+| Expectation                                                                  | Negated                       | Summary                                         |
+|------------------------------------------------------------------------------|-------------------------------|-------------------------------------------------|
 | [`HasStatusCode`](Docs/pages/01-http-messages.md#status-code)                | `HasStatusCode().DifferentTo` | has the expected status code or status category |
 | [`HasHeader`](Docs/pages/01-http-messages.md#response-headers)               | `DoesNotHaveHeader`           | has a header, optionally with a value           |
 | [`HasContentType`](Docs/pages/01-http-messages.md#content-type)              |                               | has the expected media type                     |
