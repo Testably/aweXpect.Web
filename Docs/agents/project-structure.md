@@ -45,8 +45,8 @@ Recent feature commits touch the same set of files:
 1. `Source/aweXpect.Web/That<Type>.<Expectation>.cs` with XML docs and, where it applies, `[GuaranteesNotNull]`.
 2. Tests in `Tests/aweXpect.Web.Tests/That<Type>.<Expectation>.Tests.cs` (and `That<Type>.<Negated>.Tests.cs`),
    nested as `That<Type>.<Expectation>.Tests`/`NegatedTests`, asserting the complete failure message with
-   `Throws<XunitException>().WithMessage("""...""")`. Internal helpers are tested in
-   `Tests/aweXpect.Web.Internal.Tests`.
+   `Throws<FailException>().WithMessage("""...""")` (aweXpect throws its own `FailException` under TUnit). Internal
+   helpers are tested in `Tests/aweXpect.Web.Internal.Tests`.
 3. Updated API snapshots for all three target frameworks.
 4. A check in `Tests/Aot/aweXpect.Web.Aot/Checks.cs`.
 5. The overview table in `README.md` and the section on the matching `Docs/pages/` page.

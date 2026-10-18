@@ -5,21 +5,25 @@
 - Build everything from the repository root with `dotnet build aweXpect.Web.slnx`. The solution excludes
   `Pipeline/Build.csproj` from the build; building the library also creates its NuGet package
   (`GeneratePackageOnBuild`).
-- Run tests per project, e.g. `dotnet test Tests/aweXpect.Web.Tests`. Use `-f net10.0` for a quick run and
-  `--filter "FullyQualifiedName~ThatUri+HasPort"` to select one nested test class (nested classes are separated
-  by `+`).
+- All test projects use TUnit and run as executables on the Microsoft.Testing.Platform, which `global.json` selects
+  for `dotnet test`, so the project is passed with `--project`, e.g. `dotnet test --project Tests/aweXpect.Web.Tests`.
+  Use `-f net10.0` for a quick run and `--treenode-filter "/*/*/ThatUri+HasPort+*/*"` to select one nested test class
+  (`/<assembly>/<namespace>/<class>/<test>`, nested classes are separated by `+`).
+  `dotnet run --project Tests/aweXpect.Web.Tests -f net10.0 -- <options>` starts the same executable.
 - Test projects and frameworks:
-  - `Tests/aweXpect.Web.Tests` and `Tests/aweXpect.Web.Internal.Tests`: xunit, `net8.0;net10.0;net48`. `net48`
+  - `Tests/aweXpect.Web.Tests` and `Tests/aweXpect.Web.Internal.Tests`: `net8.0;net10.0;net48`. `net48`
     needs Windows. The Internal tests are strong-name signed so that `InternalsVisibleTo` applies.
-  - `Tests/aweXpect.Web.Samples.Tests`: xunit with `WebApplicationFactory` against `Source/aweXpect.Web.Samples`,
-    `net8.0;net10.0`.
-  - `Tests/aweXpect.Web.Api.Tests`: NUnit, `net8.0`. It builds all target frameworks of `aweXpect.Web` after its own
+  - `Tests/aweXpect.Web.Samples.Tests`: `WebApplicationFactory` against `Source/aweXpect.Web.Samples`, shared per test
+    class through `[ClassDataSource]`, `net8.0;net10.0`.
+  - `Tests/aweXpect.Web.Api.Tests`: `net8.0`. It builds all target frameworks of `aweXpect.Web` after its own
     build and reads `Source/aweXpect.Web/bin/<Configuration>/<framework>/aweXpect.Web.dll`, so build and test in the
     same configuration. The target frameworks are read from `Source/Directory.Build.props`.
 - Public API snapshots live next to the API tests as
   `ApiApprovalTests.aweXpect%2EWeb.<framework>.awexpect-snapshot.txt`. A mismatch writes a
   `*.awexpect-snapshot.pending.txt`. Accept intentional changes with the `[Explicit]` test
-  `dotnet test Tests/aweXpect.Web.Api.Tests --filter Name=AcceptApiChanges`, by setting
+  `dotnet test --project Tests/aweXpect.Web.Api.Tests --treenode-filter "/*/*/ApiApprovalTests/AcceptApiChanges"`
+  (a run without this filter skips it, because TUnit runs an explicit test only when every test that the filter
+  selects is explicit), by setting
   `AWEXPECT_ACCEPT_SNAPSHOTS=all`, or by renaming the pending file. Delete leftover pending files.
 - AOT smoke tests: `Tests/Aot/aweXpect.Web.Aot` is a console app (`net10.0`, `PublishAot`) whose checks report through
   the exit code. `dotnet run --project Tests/Aot/aweXpect.Web.Aot` runs them under the JIT;
@@ -38,15 +42,15 @@ on a build server `Release`; override with `--configuration Release`. The pipeli
 | Target                  | Purpose                                                                                   |
 |-------------------------|-------------------------------------------------------------------------------------------|
 | `Compile`               | Restore (with `nuget.config`) and build the solution with the GitVersion-derived version  |
-| `UnitTests`             | Unit, Internal and Samples tests; `net48` through the xunit console on Windows only       |
-| `CodeCoverage`          | `UnitTests` plus an OpenCover report in `TestResults/reports`                             |
-| `ApiChecks`             | Runs `Tests/aweXpect.Web.Api.Tests`                                                       |
+| `UnitTests`             | Unit, Internal and Samples tests on every target framework (`net48` on Windows only), each writing `<project>_<framework>.trx` and `<project>_<framework>.cobertura.xml` to `TestResults` |
+| `CodeCoverage`          | `UnitTests` plus a SonarQube coverage report in `TestResults/reports`                     |
+| `ApiChecks`             | Runs `Tests/aweXpect.Web.Api.Tests` and writes `TestResults/aweXpect.Web.Api.Tests.trx`   |
 | `AotSmokeTests`         | Runs the AOT smoke tests under the JIT and published with Native AOT                      |
 | `Benchmarks`            | Runs `Benchmarks/aweXpect.Web.Benchmarks` in Release and logs the report                  |
-| `MutationTests`         | Stryker on `aweXpect.Web` with the three unit test projects, `net10.0`, since `main`      |
+| `MutationTests`         | Stryker on `aweXpect.Web` with the unit and API test projects, `net10.0`, since `main`, with Stryker's runner for the Microsoft.Testing.Platform (`--test-runner mtp`) |
 | `CodeAnalysis`          | SonarCloud analysis; needs `SonarToken`                                                   |
 | `Pack`                  | Rewrites the README badges for the release and moves the packages to `Artifacts/Packages` |
-| `BenchmarkComment`, `MutationTestDashboard` | CI only: comment on the pull request and upload the Stryker report    |
+| `BenchmarkComment`, `MutationTestsComment`, `MutationTestsDashboard` | CI only: comment on the pull request and upload the Stryker report |
 
 Mutation tests and benchmarks are slow; leave them to CI unless the task is about them. For a single benchmark run
 `dotnet run -c Release --project Benchmarks/aweXpect.Web.Benchmarks -- --filter *Content*`.
