@@ -48,7 +48,12 @@ await Expect.That(request).DoesNotHaveRequestUri("https://music.example.com/admi
 ```
 
 The expected URI must be absolute. Scheme and host are compared ignoring case; path, query and fragment are
-case-sensitive.
+case-sensitive, unless you add `.IgnoringCase()`:
+
+```csharp
+await Expect.That(request).HasRequestUri("https://music.example.com/Tracks/1").IgnoringCase();
+await Expect.That(request).DoesNotHaveRequestUri("https://music.example.com/Admin").IgnoringCase();
+```
 
 ### Request headers
 
