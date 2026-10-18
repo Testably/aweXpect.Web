@@ -47,6 +47,9 @@ await Expect.That(request).HasRequestUri(new Uri("https://music.example.com/trac
 await Expect.That(request).DoesNotHaveRequestUri("https://music.example.com/admin");
 ```
 
+The expected URI must be absolute. Scheme and host are compared ignoring case; path, query and fragment are
+case-sensitive.
+
 ### Request headers
 
 You can verify that the `HttpRequestMessage` has a header, optionally with the expected value, or that it does not have

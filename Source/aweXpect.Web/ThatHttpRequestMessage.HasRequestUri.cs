@@ -43,7 +43,7 @@ public static partial class ThatHttpRequestMessage
 	public static AndOrResult<HttpRequestMessage, IThat<HttpRequestMessage?>>
 		HasRequestUri(this IThat<HttpRequestMessage?> subject, Uri expected)
 	{
-		ThrowHelper.ThrowIfNull(expected, nameof(expected));
+		ThatUri.ThrowIfNotAbsolute(expected, nameof(expected));
 		return new(
 			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
