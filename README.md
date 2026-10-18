@@ -52,12 +52,12 @@ HTTP-Response:
 
 Expectations for [`HttpRequestMessage`](Docs/pages/01-http-messages.md#httprequestmessage):
 
-| Expectation                                                    | Negated             | Summary                               |
-|----------------------------------------------------------------|---------------------|---------------------------------------|
-| [`HasMethod`](Docs/pages/01-http-messages.md#method)           |                     | has the expected HTTP method          |
-| [`HasRequestUri`](Docs/pages/01-http-messages.md#request-uri)  |                     | has the expected request URI          |
-| [`HasHeader`](Docs/pages/01-http-messages.md#request-headers)  | `DoesNotHaveHeader` | has a header, optionally with a value |
-| [`HasContent`](Docs/pages/01-http-messages.md#request-content) |                     | has the expected string content       |
+| Expectation                                                    | Negated                 | Summary                               |
+|----------------------------------------------------------------|-------------------------|---------------------------------------|
+| [`HasMethod`](Docs/pages/01-http-messages.md#method)           | `DoesNotHaveMethod`     | has the expected HTTP method          |
+| [`HasRequestUri`](Docs/pages/01-http-messages.md#request-uri)  | `DoesNotHaveRequestUri` | has the expected request URI          |
+| [`HasHeader`](Docs/pages/01-http-messages.md#request-headers)  | `DoesNotHaveHeader`     | has a header, optionally with a value |
+| [`HasContent`](Docs/pages/01-http-messages.md#request-content) | `DoesNotHaveContent`    | has the expected string content       |
 
 Expectations for [`HttpResponseMessage`](Docs/pages/01-http-messages.md#httpresponsemessage):
 
@@ -65,9 +65,9 @@ Expectations for [`HttpResponseMessage`](Docs/pages/01-http-messages.md#httpresp
 |------------------------------------------------------------------------------|-------------------------------|-------------------------------------------------|
 | [`HasStatusCode`](Docs/pages/01-http-messages.md#status-code)                | `HasStatusCode().DifferentTo` | has the expected status code or status category |
 | [`HasHeader`](Docs/pages/01-http-messages.md#response-headers)               | `DoesNotHaveHeader`           | has a header, optionally with a value           |
-| [`HasContentType`](Docs/pages/01-http-messages.md#content-type)              |                               | has the expected media type                     |
-| [`HasContent`](Docs/pages/01-http-messages.md#response-content)              |                               | has the expected string content                 |
-| [`HasProblemDetailsContent`](Docs/pages/01-http-messages.md#problem-details) |                               | has a `ProblemDetails` content                  |
+| [`HasContentType`](Docs/pages/01-http-messages.md#content-type)              | `DoesNotHaveContentType`      | has the expected media type                     |
+| [`HasContent`](Docs/pages/01-http-messages.md#response-content)              | `DoesNotHaveContent`          | has the expected string content                 |
+| [`HasProblemDetailsContent`](Docs/pages/01-http-messages.md#problem-details) | `DoesNotComplyWith`           | has a `ProblemDetails` content                  |
 | [`HasRequestMessage`](Docs/pages/01-http-messages.md#request-message)        |                               | the request message meets nested expectations   |
 
 Expectations for [`Uri`](Docs/pages/02-uri.md):
