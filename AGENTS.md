@@ -31,8 +31,10 @@ Correctness is a must. The other goals are strong defaults and win in this order
   (public behaviour), `Tests/aweXpect.Web.Internal.Tests` (internals, via `InternalsVisibleTo`) and
   `Tests/aweXpect.Web.Samples.Tests` (end-to-end against `Source/aweXpect.Web.Samples`, `net8.0`/`net10.0` only).
   CI runs all three on Windows, Linux and macOS; `net48` only runs on Windows.
+- All tests run on TUnit and the Microsoft.Testing.Platform, which `global.json` selects for `dotnet test`: pass the
+  project with `--project` and filter with `--treenode-filter`.
 - The Samples tests pin the failure message shown in `README.md`. Change both together.
-- Public API: `Tests/aweXpect.Web.Api.Tests` (NUnit) compares the API of every target framework with the
+- Public API: `Tests/aweXpect.Web.Api.Tests` compares the API of every target framework with the
   `*.awexpect-snapshot.txt` files. Accept an intentional change with the explicit `AcceptApiChanges` test or by running
   with `AWEXPECT_ACCEPT_SNAPSHOTS=all`, and commit the updated snapshots. Never commit `*.awexpect-snapshot.pending.*`.
 - New or changed expectations get a check in `Tests/Aot/aweXpect.Web.Aot/Checks.cs`; `./build.ps1 AotSmokeTests` runs
