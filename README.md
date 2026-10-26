@@ -1,5 +1,9 @@
 # aweXpect.Web
 
+> [!IMPORTANT]
+> This repository is archived. From version 4.0.0 on, `aweXpect.Web` is developed in the [aweXpect repository](https://github.com/Testably/aweXpect/tree/main/Source/aweXpect.Web) and released together with aweXpect, under the same package name on NuGet.
+> The documentation is at [docs.testably.org](https://docs.testably.org/aweXpect/extensions/aweXpect.Web/). Please open issues and pull requests in the [aweXpect repository](https://github.com/Testably/aweXpect).
+
 [![Nuget](https://img.shields.io/nuget/v/aweXpect.Web)](https://www.nuget.org/packages/aweXpect.Web)
 [![Build](https://github.com/Testably/aweXpect.Web/actions/workflows/build.yml/badge.svg)](https://github.com/Testably/aweXpect.Web/actions/workflows/build.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Testably_aweXpect.Web&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Testably_aweXpect.Web)
